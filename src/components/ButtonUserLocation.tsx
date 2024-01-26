@@ -22,7 +22,7 @@ export const ButtonUserLocation = () => {
     <Button
       onClick={onClick}
       variant="destructive"
-      className="fixed flex flex-row gap-x-2 top-5 right-5 rounded-full"
+      className="fixed flex flex-row gap-x-2 top-4 right-4 rounded-full"
     >
       <MapPin />
       <span className="hidden md:inline">Mi ubicación</span>
