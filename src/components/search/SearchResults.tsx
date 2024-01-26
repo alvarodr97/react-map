@@ -3,7 +3,7 @@ import usePlacesStore from "@/zustand/placeStore";
 export const SearchResults = () => {
   const { isLoadingPlaces, places } = usePlacesStore();
 
-  if (!isLoadingPlaces)
+  if (isLoadingPlaces)
     return <div className="my-1 p-2">Cargando localizaciones...</div>;
 
   if (!places.length) return <></>;
