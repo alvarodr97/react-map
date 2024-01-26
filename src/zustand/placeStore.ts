@@ -13,7 +13,7 @@ interface Store {
   searchPlacesByQuery: (query: string) => Promise<Feature[]>;
 }
 
-const usePlacesStore = create<Store>((set) => ({
+const usePlacesStore = create<Store>((set, get) => ({
   isLoading: false,
   userLocation: undefined,
   isLoadingPlaces: false,
@@ -28,19 +28,16 @@ const usePlacesStore = create<Store>((set) => ({
       return [];
     }
 
-    if (!usePlacesStore.getState().userLocation)
+    if (!get().userLocation)
       throw new Error("El usuario no ha proporcionado la ubicación.");
 
     set({ isLoadingPlaces: true });
 
     const resp: Root = await searchApi.get(`${query}.json`, {
       params: {
-        proximity: usePlacesStore.getState().userLocation?.join(","),
+        proximity: get().userLocation?.join(","),
       },
     });
-
-    console.log(resp.data.features);
-    // console.log(resp.data.features)
 
     set({ places: resp.data.features, isLoadingPlaces: false });
 
