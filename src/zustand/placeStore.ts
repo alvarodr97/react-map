@@ -1,6 +1,7 @@
-import searchApi from "@/api/fetchPlaces";
-import { Feature, Root } from "@/interfaces/places";
 import { create } from "zustand";
+import { searchApi } from "@/api/fetcher";
+import { Data, Feature } from "@/interfaces/places";
+import useMapStore from "./mapStore";
 
 interface Store {
   isLoading: boolean;
@@ -10,7 +11,7 @@ interface Store {
 
   setUserLocation: (lnglat: [number, number]) => void;
   clearPlaces: () => void;
-  searchPlacesByQuery: (query: string) => Promise<Feature[]>;
+  searchPlacesByQuery: (query: string) => void;
 }
 
 const usePlacesStore = create<Store>((set, get) => ({
@@ -25,7 +26,8 @@ const usePlacesStore = create<Store>((set, get) => ({
   searchPlacesByQuery: async (query: string) => {
     if (query.length === 0) {
       set({ places: [] });
-      return [];
+      useMapStore.getState().clearMarkers();
+      return;
     }
 
     if (!get().userLocation)
@@ -33,15 +35,17 @@ const usePlacesStore = create<Store>((set, get) => ({
 
     set({ isLoadingPlaces: true });
 
-    const resp: Root = await searchApi.get(`${query}.json`, {
-      params: {
-        proximity: get().userLocation?.join(","),
-      },
-    });
-
-    set({ places: resp.data.features, isLoadingPlaces: false });
-
-    return resp.data.features;
+    await searchApi
+      .get<Data>(`/geocoding/v5/mapbox.places/${query}.json`, {
+        params: {
+          limit: 5,
+          proximity: get().userLocation?.join(","),
+        },
+      })
+      .then(({ data }) => {
+        set({ places: data.features, isLoadingPlaces: false });
+        useMapStore.getState().setMarkers();
+      });
   },
 }));
 
