@@ -15,7 +15,6 @@ export const InputSearch = () => {
     debounceRef.current = setTimeout(() => {
       searchPlacesByQuery(e.target.value);
     }, 400);
-
   };
 
   const onClick = () => {
