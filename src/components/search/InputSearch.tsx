@@ -1,10 +1,10 @@
-import usePlacesStore from "@/zustand/placeStore";
 import { ChangeEvent, ElementRef, useRef } from "react";
+import usePlacesStore from "@/zustand/placeStore";
 import { Input } from "../ui/input";
-import { Search } from "lucide-react";
+import { Loader2, Search, X } from "lucide-react";
 
 export const InputSearch = () => {
-  const { searchPlacesByQuery } = usePlacesStore();
+  const { searchPlacesByQuery, clearPlaces, isLoadingPlaces, places } = usePlacesStore();
 
   const debounceRef = useRef<NodeJS.Timeout>();
   const inputRef = useRef<ElementRef<"input">>(null);
@@ -15,18 +15,40 @@ export const InputSearch = () => {
     debounceRef.current = setTimeout(() => {
       searchPlacesByQuery(e.target.value);
     }, 400);
+
+  };
+
+  const onClick = () => {
+    clearPlaces();
+    (document.getElementById("search-input") as HTMLInputElement).value = "";
+    inputRef.current?.focus();
   };
 
   return (
-    <div className="relative flex flex-row items-center">
+    <div className="relative flex flex-row">
       <Input
         ref={inputRef}
+        id="search-input"
         type="text"
         onChange={onChange}
-        placeholder={`"Madrid"`}
-        className="rounded-lg focus-visible:ring-0 focus-visible:ring-ring focus-visible:ring-offset-0"
+        placeholder={`"Parque de El Retiro"`}
+        className="rounded-lg rounded-r-none focus:placeholder:text-transparent focus-visible:ring-0 focus-visible:ring-ring focus-visible:ring-offset-0"
       />
-      <Search className="absolute right-3" />
+      <div className="flex h-10 w-10 justify-center self-center rounded-md rounded-l-none border border-l-0">
+        {!isLoadingPlaces && !places.length ? (
+          <Search
+            onClick={() => inputRef.current?.focus()}
+            className="h-full w-full cursor-pointer p-2 hover:bg-slate-200"
+          />
+        ) : isLoadingPlaces ? (
+          <Loader2 className="h-full w-full animate-spin p-2" />
+        ) : (
+          <X
+            onClick={onClick}
+            className="h-full w-full cursor-pointer p-1 hover:bg-slate-200"
+          />
+        )}
+      </div>
     </div>
   );
 };

@@ -3,7 +3,7 @@ import { SearchResults } from "./SearchResults";
 
 export const SearchContainer = () => {
   return (
-    <div className="fixed w-[400px] top-4 left-4 flex flex-col gap-y-3 bg-white p-2 border border-black rounded-lg">
+    <div className="fixed left-4 top-4 flex w-[400px] flex-col gap-y-2 rounded-lg border border-black bg-white p-2">
       <InputSearch />
       <SearchResults />
     </div>
