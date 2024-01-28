@@ -2,6 +2,7 @@ import { ChangeEvent, ElementRef, useRef } from "react";
 import usePlacesStore from "@/zustand/placeStore";
 import { Input } from "../ui/input";
 import { Loader2, Search, X } from "lucide-react";
+import { TooltipButton } from "../TooltipButton";
 
 export const InputSearch = () => {
   const { searchPlacesByQuery, clearPlaces, isLoadingPlaces, places } = usePlacesStore();
@@ -35,17 +36,21 @@ export const InputSearch = () => {
       />
       <div className="flex h-10 w-10 justify-center self-center rounded-md rounded-l-none border border-l-0">
         {!isLoadingPlaces && !places.length ? (
-          <Search
-            onClick={() => inputRef.current?.focus()}
-            className="h-full w-full cursor-pointer p-2 hover:bg-slate-200"
-          />
+          <TooltipButton side="right" tooltipText="Search">
+            <Search
+              onClick={() => inputRef.current?.focus()}
+              className="h-full w-full cursor-pointer p-2 hover:bg-slate-200"
+            />
+          </TooltipButton>
         ) : isLoadingPlaces ? (
           <Loader2 className="h-full w-full animate-spin p-2" />
         ) : (
-          <X
-            onClick={onClick}
-            className="h-full w-full cursor-pointer p-1 hover:bg-slate-200"
-          />
+          <TooltipButton side="right" tooltipText="Close">
+            <X
+              onClick={onClick}
+              className="h-full w-full cursor-pointer p-1 hover:bg-slate-200"
+            />
+          </TooltipButton>
         )}
       </div>
     </div>
