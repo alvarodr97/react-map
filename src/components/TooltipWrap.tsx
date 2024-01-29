@@ -12,7 +12,7 @@ interface Props {
   tooltipText: string;
 }
 
-export const TooltipButton = ({
+export const TooltipWrap = ({
   children,
   side,
   sideOffset = 4,

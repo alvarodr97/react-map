@@ -1,7 +1,7 @@
 import useMapStore from "@/zustand/mapStore";
 import usePlacesStore from "@/zustand/placeStore";
 import { MapPin } from "lucide-react";
-import { TooltipButton } from "./TooltipButton";
+import { TooltipWrap } from "./TooltipWrap";
 
 export const ButtonUserLocation = () => {
   const { map, isMapReady } = useMapStore();
@@ -18,13 +18,13 @@ export const ButtonUserLocation = () => {
   };
 
   return (
-    <TooltipButton side="left" tooltipText="Find my location">
+    <TooltipWrap side="left" tooltipText="Find my location">
       <div
         onClick={onClick}
         className="fixed bottom-8 right-4 flex h-14 w-14 cursor-pointer items-center justify-center rounded-full border border-black bg-white transition hover:scale-105"
       >
         <MapPin className="h-8 w-8" />
       </div>
-    </TooltipButton>
+    </TooltipWrap>
   );
 };
