@@ -1,12 +1,14 @@
 import { ChangeEvent, ElementRef, useRef } from "react";
-import usePlacesStore from "@/zustand/placeStore";
+import { useBoundStore } from "@/store/store";
 import { Input } from "../ui/input";
 import { Loader2, Search, X } from "lucide-react";
 import { TooltipWrap } from "../TooltipWrap";
 
 export const InputSearch = () => {
-  const { searchPlacesByQuery, clearPlaces, isLoadingPlaces } = usePlacesStore();
-
+  const isLoadingPlaces = useBoundStore((state) => state.isLoadingPlaces);
+  const searchPlacesByQuery = useBoundStore((state) => state.searchPlacesByQuery);
+  const clearPlaces = useBoundStore((state) => state.clearPlaces);
+  
   const debounceRef = useRef<NodeJS.Timeout>();
   const inputRef = useRef<ElementRef<"input">>(null);
 

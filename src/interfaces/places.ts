@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 
-export interface Root {
-  data: Data;
+export interface RootPlaces {
+  data: PlacesData;
   status: number;
   statusText: string;
   headers: Headers;
@@ -9,7 +9,7 @@ export interface Root {
   request: Request;
 }
 
-export interface Data {
+export interface PlacesData {
   type: string;
   query: string[];
   features: Feature[];

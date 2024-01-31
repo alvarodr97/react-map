@@ -1,11 +1,11 @@
-import useMapStore from "@/zustand/mapStore";
-import usePlacesStore from "@/zustand/placeStore";
+import { useBoundStore } from "@/store/store";
 import { MapPin } from "lucide-react";
 import { TooltipWrap } from "./TooltipWrap";
 
 export const ButtonUserLocation = () => {
-  const { map, isMapReady } = useMapStore();
-  const { userLocation } = usePlacesStore();
+  const isMapReady = useBoundStore((state) => state.isMapReady);
+  const userLocation = useBoundStore((state) => state.userLocation);
+  const map = useBoundStore((state) => state.map);
 
   const onClick = () => {
     if (!isMapReady) throw new Error("El mapa no está listo.");

@@ -1,8 +1,8 @@
-import { create } from "zustand";
+import { StateCreator } from "zustand";
 import { Map, Marker, Popup } from "mapbox-gl";
-import usePlacesStore from "./placeStore";
+import { useBoundStore } from "./store";
 
-interface Store {
+export interface MapSlice {
   isMapReady: boolean;
   map?: Map;
   markers: Marker[];
@@ -12,10 +12,12 @@ interface Store {
   setMarkers: () => void;
 }
 
-const useMapStore = create<Store>((set, get) => ({
+const createMapSlice: StateCreator<MapSlice> = (set, get) => ({
   isMapReady: false,
   map: undefined,
   markers: [],
+
+  // Map is created.
   setMap: (map: Map) => {
     const myLocationPopUp = new Popup().setHTML(`
       <h4>Tu ubicación aproximada</h4>
@@ -33,13 +35,17 @@ const useMapStore = create<Store>((set, get) => ({
       isMapReady: true,
     });
   },
+
+  // Clear markers from map.
   clearMarkers: () => {
     get().markers.forEach((marker) => marker.remove());
   },
+
+  // Place the markers in the map.
   setMarkers: () => {
     get().clearMarkers();
     const newMarkers: Marker[] = [];
-    const places = usePlacesStore.getState().places;
+    const places = useBoundStore.getState().places;
 
     for (const place of places) {
       const [lng, lat] = place.center;
@@ -59,6 +65,6 @@ const useMapStore = create<Store>((set, get) => ({
 
     set({ isMapReady: true, markers: newMarkers });
   },
-}));
+});
 
-export default useMapStore;
+export default createMapSlice;

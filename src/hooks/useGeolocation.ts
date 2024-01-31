@@ -1,9 +1,9 @@
 import { useLayoutEffect, useState } from "react";
-import usePlacesStore from "@/zustand/placeStore";
+import { useBoundStore } from "@/store/store";
 import { getUserLocation } from "@/helpers/getUserLocation";
 
 export const useGeolocation = () => {
-  const { setUserLocation } = usePlacesStore();
+  const setUserLocation = useBoundStore((state) => state.setUserLocation);
   const [geoError, setGeoError] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
 

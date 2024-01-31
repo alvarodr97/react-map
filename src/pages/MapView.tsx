@@ -1,13 +1,12 @@
 import { useLayoutEffect, useRef } from "react";
-import usePlacesStore from "../zustand/placeStore";
-import useMapStore from "@/zustand/mapStore";
 import mapboxgl, { Map } from "mapbox-gl";
-
+import { useBoundStore } from "@/store/store";
 import { GlobalLoader } from "../components/loaders/GlobalLoader";
 
 export const MapView = () => {
-  const { userLocation } = usePlacesStore();
-  const { setMap, isMapReady } = useMapStore();
+  const userLocation = useBoundStore((state) => state.userLocation);
+  const setMap = useBoundStore((state) => state.setMap);
+  const isMapReady = useBoundStore((state) => state.isMapReady);
   const mapDiv = useRef<HTMLDivElement>(null);
 
   useLayoutEffect(() => {

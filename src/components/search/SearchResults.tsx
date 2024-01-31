@@ -1,26 +1,58 @@
-import usePlacesStore from "@/zustand/placeStore";
+import { TooltipWrap } from "../TooltipWrap";
+import { ChevronRight } from "lucide-react";
+import { DropdownSearch } from "./DropdownSearch";
+import { useBoundStore } from "@/store/store";
 
 export const SearchResults = () => {
-  const { isLoadingPlaces, places } = usePlacesStore();
+  const isMapReady = useBoundStore((state) => state.isMapReady);
+  const userLocation = useBoundStore((state) => state.userLocation);
+  const map = useBoundStore((state) => state.map);
+  const isFeatureEmpty = useBoundStore((state) => state.isFeatureEmpty);
+  const places = useBoundStore((state) => state.places);
 
-  if (isLoadingPlaces)
-    return <div className="my-1 p-2">Cargando localizaciones...</div>;
+  const onClick = (desiredLocation: number[]) => {
+    if (!isMapReady) throw new Error("El mapa no está listo.");
+    if (!userLocation) throw new Error("No existe ubicación de usuario.");
+
+    const [lng, lat] = desiredLocation;
+
+    map?.flyTo({
+      zoom: 14,
+      center: [lng, lat],
+    });
+  };
+
+  if (isFeatureEmpty) return <div className="px-2 py-1">Place not found</div>;
 
   if (!places.length) return <></>;
 
   return (
-    // <div className="h-[300px] overflow-auto">
-    <div>
-      <ol>
-        {places.map((sitio) => (
-          <li
-            key={sitio.id}
-            className="border border-black rounded-lg my-1 p-2 cursor-pointer hover:bg-slate-200"
+    <div className="w-full space-y-1">
+      {places?.map((place) => (
+        <div
+          key={place.id}
+          className="flex flex-row rounded-lg border border-black "
+        >
+          <TooltipWrap side="bottom" tooltipText={place.place_name_es}>
+            <p
+              onClick={() => onClick(place.center)}
+              className="w-full cursor-pointer truncate  rounded-l-lg p-2 hover:bg-slate-200"
+            >
+              {place.place_name_es}
+            </p>
+          </TooltipWrap>
+          <DropdownSearch
+            side="right"
+            sideOffset={12}
+            userLocation={userLocation!}
+            userDestination={place.center as [number, number]}
           >
-            {sitio.place_name_es}
-          </li>
-        ))}
-      </ol>
+            <div className="cursor-pointer rounded-lg rounded-l-none p-2 hover:bg-slate-200">
+              <ChevronRight />
+            </div>
+          </DropdownSearch>
+        </div>
+      ))}
     </div>
   );
 };
