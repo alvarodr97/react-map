@@ -3,7 +3,7 @@ import { ErrorGeolocation } from "./pages/ErrorGeolocation";
 import { GlobalLoader } from "./components/loaders/GlobalLoader";
 import { MapView } from "./pages/MapView";
 import { ButtonUserLocation } from "./components/ButtonUserLocation";
-import { ButtonStyleMap } from "./components/ButtonStyleMap";
+// import { ButtonStyleMap } from "./components/ButtonStyleMap";
 import { SearchContainer } from "./components/search/SearchContainer";
 
 function App() {
@@ -26,7 +26,7 @@ function App() {
       <MapView />
       <>
         <ButtonUserLocation />
-        <ButtonStyleMap />
+        {/* <ButtonStyleMap /> */}
         <SearchContainer />
       </>
     </>
