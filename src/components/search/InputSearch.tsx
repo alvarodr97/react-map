@@ -1,4 +1,4 @@
-import { ChangeEvent, ElementRef, useRef } from "react";
+import { ChangeEvent, ElementRef, useRef, useState } from "react";
 import { useBoundStore } from "@/store/store";
 import { Input } from "../ui/input";
 import { Loader2, Search, X } from "lucide-react";
@@ -8,12 +8,15 @@ export const InputSearch = () => {
   const isLoadingPlaces = useBoundStore((state) => state.isLoadingPlaces);
   const searchPlacesByQuery = useBoundStore((state) => state.searchPlacesByQuery);
   const clearPlaces = useBoundStore((state) => state.clearPlaces);
+
+  const [inputValue, setInputValue] = useState("");
   
   const debounceRef = useRef<NodeJS.Timeout>();
   const inputRef = useRef<ElementRef<"input">>(null);
 
   const onChange = (e: ChangeEvent<HTMLInputElement>) => {
     if (debounceRef.current) clearTimeout(debounceRef.current);
+    setInputValue(e.target.value)
 
     debounceRef.current = setTimeout(() => {
       searchPlacesByQuery(e.target.value);
@@ -22,7 +25,7 @@ export const InputSearch = () => {
 
   const onClick = () => {
     clearPlaces();
-    (document.getElementById("search-input") as HTMLInputElement).value = "";
+    setInputValue("");
     inputRef.current?.focus();
   };
 
@@ -30,14 +33,14 @@ export const InputSearch = () => {
     <div className="relative flex flex-row">
       <Input
         ref={inputRef}
-        id="search-input"
         type="text"
+        value={inputValue}
         onChange={onChange}
         placeholder={`"Parque de El Retiro"`}
         className="rounded-lg rounded-r-none focus:placeholder:text-transparent focus-visible:ring-0 focus-visible:ring-ring focus-visible:ring-offset-0"
       />
       <div className="flex h-10 w-10 justify-center self-center rounded-md rounded-l-none border border-l-0">
-        {!isLoadingPlaces && !inputRef.current?.value.length ? (
+        {!isLoadingPlaces && !inputValue ? (
           <TooltipWrap side="right" tooltipText="Search">
             <Search
               onClick={() => inputRef.current?.focus()}
