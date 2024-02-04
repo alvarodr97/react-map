@@ -8,6 +8,8 @@ export const InputSearch = () => {
   const isLoadingPlaces = useBoundStore((state) => state.isLoadingPlaces);
   const searchPlacesByQuery = useBoundStore((state) => state.searchPlacesByQuery);
   const clearPlaces = useBoundStore((state) => state.clearPlaces);
+  const clearMarkers = useBoundStore((state) => state.clearMarkers);
+  const clearRoute = useBoundStore((state) => state.clearRoute);
 
   const [inputValue, setInputValue] = useState("");
   
@@ -16,6 +18,7 @@ export const InputSearch = () => {
 
   const onChange = (e: ChangeEvent<HTMLInputElement>) => {
     if (debounceRef.current) clearTimeout(debounceRef.current);
+
     setInputValue(e.target.value)
 
     debounceRef.current = setTimeout(() => {
@@ -23,7 +26,9 @@ export const InputSearch = () => {
     }, 400);
   };
 
-  const onClick = () => {
+  const onClose = () => {
+    clearRoute();
+    clearMarkers();
     clearPlaces();
     setInputValue("");
     inputRef.current?.focus();
@@ -52,7 +57,7 @@ export const InputSearch = () => {
         ) : (
           <TooltipWrap side="right" tooltipText="Close">
             <X
-              onClick={onClick}
+              onClick={onClose}
               className="h-full w-full cursor-pointer p-1 hover:bg-slate-200"
             />
           </TooltipWrap>

@@ -1,7 +1,8 @@
 import { StateCreator } from "zustand";
+import { useBoundStore } from "./store";
 import { Waypoint } from "@/interfaces/directions";
 import { getRoute } from "@/services/fetcher";
-import { drawRoute } from "@/helpers/drawRoute";
+import { clearRouteF, drawRoute } from "@/helpers/drawRoute";
 
 export type RouteNavigationType = "driving" | "walking" | "cycling";
 
@@ -14,7 +15,8 @@ export interface RouteSlice {
     navigation: RouteNavigationType,
     startRoute: [number, number],
     endRoute: [number, number],
-  ) => void;
+  ) => Promise<void>;
+  clearRoute: () => void;
 }
 
 const createRouteSlice: StateCreator<RouteSlice> = (set) => ({
@@ -29,11 +31,10 @@ const createRouteSlice: StateCreator<RouteSlice> = (set) => ({
     try {
       const data = await getRoute(navigation, startRoute, endRoute);
 
-      // Sometimes there is no error, but the the route still does not exists.
+      // Sometimes there is no error, but the route still does not exists.
       if (data.code !== "Ok") {
-        alert("Route not found");
-        set({ isLoadingRoute: false });
-        return;
+        // alert("Route not found");
+        throw Error;
       }
 
       const { geometry } = data.routes[0];
@@ -45,11 +46,15 @@ const createRouteSlice: StateCreator<RouteSlice> = (set) => ({
       set({ isRouteFound: true, currentRoute: data.waypoints });
     } catch {
       set({ isRouteFound: false, currentRoute: [] });
-      alert("Route not available");
+      throw Error;
     } finally {
-      console.log("FPOKWFP");
       set({ isLoadingRoute: false });
     }
+  },
+  // Clear the route from the map.
+  clearRoute: () => {
+    if (useBoundStore.getState().map!.getLayer("RouteString"))
+      clearRouteF(useBoundStore.getState().map!);
   },
 });
 

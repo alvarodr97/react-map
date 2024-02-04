@@ -5,9 +5,10 @@ import { MapView } from "./pages/MapView";
 import { ButtonUserLocation } from "./components/ButtonUserLocation";
 // import { ButtonStyleMap } from "./components/ButtonStyleMap";
 import { SearchContainer } from "./components/search/SearchContainer";
+import { Toaster } from "sonner";
 
 function App() {
-  // Se pide al usuario las coordenadas.
+  // Ask for coordinates.
   const { geoError, isLoading } = useGeolocation();
 
   if (isLoading)
@@ -17,12 +18,13 @@ function App() {
       </GlobalLoader>
     );
 
-  // Si las rechaza se muestra mensaje de error.
+  // If denied, show error message.
   if (geoError) return <ErrorGeolocation />;
 
-  // Se muestra el mapa y la interfaz.
+  // Show map and interface.
   return (
     <>
+      <Toaster position="top-center" richColors />
       <MapView />
       <>
         <ButtonUserLocation />

@@ -1,4 +1,5 @@
-import { Bike, Car, Footprints } from "lucide-react";
+import { useBoundStore } from "@/store/store";
+import { toast } from "sonner";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -8,7 +9,8 @@ import {
   DropdownMenuShortcut,
   DropdownMenuTrigger,
 } from "../ui/dropdown-menu";
-import { useBoundStore } from "@/store/store";
+import { Bike, Car, Footprints } from "lucide-react";
+import { RouteNavigationType } from "@/store/routeSlice";
 
 interface Props {
   children: React.ReactNode;
@@ -27,6 +29,12 @@ export const DropdownSearch = ({
 }: Props) => {
   const setRoute = useBoundStore((state) => state.setRoute);
 
+  const drawRoute = (routeType: RouteNavigationType) => {
+    setRoute(routeType, userLocation, userDestination).catch(() =>
+      toast.error("Option not available"),
+    );
+  };
+
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>{children}</DropdownMenuTrigger>
@@ -34,7 +42,8 @@ export const DropdownSearch = ({
         <DropdownMenuLabel>Options</DropdownMenuLabel>
         <DropdownMenuSeparator />
         <DropdownMenuItem
-          onClick={() => setRoute("walking", userLocation, userDestination)}
+          // onClick={() => setRoute("walking", userLocation, userDestination)}
+          onClick={() => drawRoute("walking")}
         >
           Walk
           <DropdownMenuShortcut>
@@ -42,7 +51,8 @@ export const DropdownSearch = ({
           </DropdownMenuShortcut>
         </DropdownMenuItem>
         <DropdownMenuItem
-          onClick={() => setRoute("driving", userLocation, userDestination)}
+          // onClick={() => setRoute("driving", userLocation, userDestination)}
+          onClick={() => drawRoute("driving")}
         >
           Drive
           <DropdownMenuShortcut>
@@ -50,7 +60,8 @@ export const DropdownSearch = ({
           </DropdownMenuShortcut>
         </DropdownMenuItem>
         <DropdownMenuItem
-          onClick={() => setRoute("cycling", userLocation, userDestination)}
+          // onClick={() => setRoute("cycling", userLocation, userDestination)}
+          onClick={() => drawRoute("cycling")}
         >
           Cycling
           <DropdownMenuShortcut>

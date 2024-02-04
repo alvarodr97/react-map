@@ -1,12 +1,12 @@
 import { useBoundStore } from "@/store/store";
-import { AnySourceData, LngLatBounds } from "mapbox-gl";
+import { AnySourceData, LngLatBounds, Map } from "mapbox-gl";
 
 export function drawRoute(
   startRoute: [number, number],
   endRoute: [number, number],
   coordinates: number[][],
 ) {
-  const map = useBoundStore.getState().map;
+  const map: Map = useBoundStore.getState().map!;
   const bounds = new LngLatBounds(startRoute, endRoute);
 
   for (const coord of coordinates) {
@@ -14,7 +14,7 @@ export function drawRoute(
     bounds.extend(newCoord);
   }
 
-  map!.fitBounds(bounds, {
+  map.fitBounds(bounds, {
     padding: 200,
   });
 
@@ -36,14 +36,13 @@ export function drawRoute(
     },
   };
 
-  if (map!.getLayer("RouteString")) {
-    map!.removeLayer("RouteString");
-    map!.removeSource("RouteString");
+  if (map.getLayer("RouteString")) {
+    clearRouteF(map);
   }
 
-  map!.addSource("RouteString", sourceData);
+  map.addSource("RouteString", sourceData);
 
-  map!.addLayer({
+  map.addLayer({
     id: "RouteString",
     type: "line",
     source: "RouteString",
@@ -56,4 +55,9 @@ export function drawRoute(
       "line-width": 3,
     },
   });
+}
+
+export function clearRouteF(map: Map) {
+  map.removeLayer("RouteString");
+  map.removeSource("RouteString");
 }
