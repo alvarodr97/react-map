@@ -24,7 +24,7 @@ function App() {
   // Show map and interface.
   return (
     <>
-      <Toaster position="top-center" richColors />
+      <Toaster position="top-center" richColors closeButton />
       <MapView />
       <>
         <ButtonUserLocation />

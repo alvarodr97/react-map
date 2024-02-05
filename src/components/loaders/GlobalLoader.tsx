@@ -9,7 +9,7 @@ export const GlobalLoader = ({ children }: Props) => {
   return (
     <div
       className={cn(
-        "flex h-screen w-screen items-center justify-center bg-yellow-100/30",
+        "relative z-50 flex h-screen w-screen items-center justify-center bg-yellow-100/30",
         children && "flex-col gap-y-6",
       )}
     >

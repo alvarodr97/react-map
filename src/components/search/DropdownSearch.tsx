@@ -1,4 +1,5 @@
 import { useBoundStore } from "@/store/store";
+import { useGlobalLoading } from "@/hooks/useGlobalLoading";
 import { toast } from "sonner";
 import {
   DropdownMenu,
@@ -28,11 +29,13 @@ export const DropdownSearch = ({
   userDestination,
 }: Props) => {
   const setRoute = useBoundStore((state) => state.setRoute);
+  const { setGlobalLoading } = useGlobalLoading();
 
   const drawRoute = (routeType: RouteNavigationType) => {
-    setRoute(routeType, userLocation, userDestination).catch(() =>
-      toast.error("Option not available"),
-    );
+    setGlobalLoading(true);
+    setRoute(routeType, userLocation, userDestination)
+      .catch(() => toast.error("Option not available"))
+      .finally(() => setGlobalLoading(false));
   };
 
   return (
