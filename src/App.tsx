@@ -14,7 +14,7 @@ function App() {
   if (isLoading)
     return (
       <GlobalLoader>
-        <p className="font-semibold">Localizando coordenadas...</p>
+        <p className="font-semibold">Finding your location...</p>
       </GlobalLoader>
     );
 
