@@ -1,5 +1,5 @@
 import { useBoundStore } from "@/store/store";
-import { MapPin } from "lucide-react";
+import { Locate } from "lucide-react";
 import { TooltipWrap } from "./TooltipWrap";
 
 export const ButtonUserLocation = () => {
@@ -23,7 +23,7 @@ export const ButtonUserLocation = () => {
         onClick={onClick}
         className="fixed bottom-8 right-4 flex h-14 w-14 cursor-pointer items-center justify-center rounded-full border border-black bg-white transition hover:scale-105"
       >
-        <MapPin className="h-8 w-8" />
+        <Locate className="h-8 w-8" />
       </div>
     </TooltipWrap>
   );
