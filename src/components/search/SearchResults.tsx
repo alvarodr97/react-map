@@ -1,9 +1,14 @@
-import { TooltipWrap } from "../TooltipWrap";
-import { ChevronRight } from "lucide-react";
-import { DropdownSearch } from "./DropdownSearch";
 import { useBoundStore } from "@/store/store";
+import { TooltipWrap } from "../TooltipWrap";
+import { DropdownSearch } from "./DropdownSearch";
+import { ChevronRight } from "lucide-react";
+import { cn } from "@/lib/utils";
 
-export const SearchResults = () => {
+interface Props {
+  isInputFocused: boolean;
+}
+
+export const SearchResults = ({ isInputFocused }: Props) => {
   const isMapReady = useBoundStore((state) => state.isMapReady);
   const userLocation = useBoundStore((state) => state.userLocation);
   const map = useBoundStore((state) => state.map);
@@ -27,7 +32,7 @@ export const SearchResults = () => {
   if (!places.length) return <></>;
 
   return (
-    <div className="w-full space-y-1">
+    <div className={cn("w-full space-y-1", !isInputFocused && "hidden")}>
       {places?.map((place) => (
         <div
           key={place.id}

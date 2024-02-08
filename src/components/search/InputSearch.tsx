@@ -4,7 +4,11 @@ import { Input } from "../ui/input";
 import { Loader2, Search, X } from "lucide-react";
 import { TooltipWrap } from "../TooltipWrap";
 
-export const InputSearch = () => {
+interface Props {
+  setIsInputFocused: React.Dispatch<React.SetStateAction<boolean>>
+}
+
+export const InputSearch = ({ setIsInputFocused }: Props) => {
   const isLoadingPlaces = useBoundStore((state) => state.isLoadingPlaces);
   const searchPlacesByQuery = useBoundStore((state) => state.searchPlacesByQuery);
   const clearPlaces = useBoundStore((state) => state.clearPlaces);
@@ -19,7 +23,7 @@ export const InputSearch = () => {
   const onChange = (e: ChangeEvent<HTMLInputElement>) => {
     if (debounceRef.current) clearTimeout(debounceRef.current);
 
-    setInputValue(e.target.value)
+    setInputValue(e.target.value);
 
     debounceRef.current = setTimeout(() => {
       searchPlacesByQuery(e.target.value);
@@ -40,6 +44,8 @@ export const InputSearch = () => {
         ref={inputRef}
         type="text"
         value={inputValue}
+        onFocus={() => setIsInputFocused(true)}
+        onBlur={() => setIsInputFocused(false)}
         onChange={onChange}
         placeholder={`"Parque de El Retiro"`}
         className="rounded-lg rounded-r-none focus:placeholder:text-transparent focus-visible:ring-0 focus-visible:ring-ring focus-visible:ring-offset-0"
