@@ -21,7 +21,7 @@ export const ButtonUserLocation = () => {
     <TooltipWrap side="left" tooltipText="Find my location">
       <div
         onClick={onClick}
-        className="fixed bottom-8 right-4 flex h-14 w-14 cursor-pointer items-center justify-center rounded-full border border-black bg-white transition hover:scale-105"
+        className="fixed bottom-8 right-4 flex h-14 w-14 cursor-pointer items-center justify-center rounded-lg border border-black bg-white transition hover:scale-105"
       >
         <Locate className="h-8 w-8" />
       </div>
