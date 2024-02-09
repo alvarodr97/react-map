@@ -34,9 +34,10 @@ const createPlaceSlice: StateCreator<PlaceSlice> = (set, get) => ({
 
   // Search place by query, checks the response from the API.
   searchPlacesByQuery: async (query: string) => {
+    useBoundStore.getState().clearRoute();
+    
     if (query.length === 0) {
       // TODO: Check routes refactor
-      useBoundStore.getState().clearRoute();
       useBoundStore.getState().clearMarkers();
       get().clearPlaces();
       return;
@@ -57,7 +58,6 @@ const createPlaceSlice: StateCreator<PlaceSlice> = (set, get) => ({
         set({ places: features, isFeatureEmpty: false, placeError: false });
       }
 
-      useBoundStore.getState().clearRoute();
       useBoundStore.getState().setMarkers();
     } catch {
       set({ places: [], isFeatureEmpty: null, placeError: true });

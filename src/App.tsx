@@ -1,11 +1,11 @@
+import { Toaster } from "sonner";
 import { useGeolocation } from "./hooks/useGeolocation";
 import { ErrorGeolocation } from "./pages/ErrorGeolocation";
 import { GlobalLoader } from "./components/loaders/GlobalLoader";
 import { MapView } from "./pages/MapView";
 import { ButtonUserLocation } from "./components/ButtonUserLocation";
-// import { ButtonStyleMap } from "./components/ButtonStyleMap";
+import { ButtonStyleMap } from "./components/ButtonStyleMap";
 import { SearchContainer } from "./components/search/SearchContainer";
-import { Toaster } from "sonner";
 
 function App() {
   // Ask for coordinates.
@@ -28,7 +28,7 @@ function App() {
       <MapView />
       <>
         <ButtonUserLocation />
-        {/* <ButtonStyleMap /> */}
+        <ButtonStyleMap />
         <SearchContainer />
       </>
     </>

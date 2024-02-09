@@ -1,6 +1,7 @@
 import { StateCreator } from "zustand";
 import { Map, Marker, Popup } from "mapbox-gl";
 import { useBoundStore } from "./store";
+import { MapStyleString } from "@/components/ButtonStyleMap";
 
 export interface MapSlice {
   isMapReady: boolean;
@@ -8,8 +9,9 @@ export interface MapSlice {
   markers: Marker[];
 
   setMap: (map: Map) => void;
-  clearMarkers: () => void;
+  setStyle: (mapStyle: MapStyleString) => void;
   setMarkers: () => void;
+  clearMarkers: () => void;
 }
 
 const createMapSlice: StateCreator<MapSlice> = (set, get) => ({
@@ -36,9 +38,10 @@ const createMapSlice: StateCreator<MapSlice> = (set, get) => ({
     });
   },
 
-  // Clear markers from map.
-  clearMarkers: () => {
-    get().markers.forEach((marker) => marker.remove());
+  // Change the style from the map. map.setStyle removes the current route.
+  setStyle: (mapStyle: MapStyleString) => {
+    useBoundStore.setState({ isRouteFound: null, currentRoute: [] });
+    get().map?.setStyle(`mapbox://styles/mapbox/${mapStyle}`);
   },
 
   // Place the markers in the map.
@@ -64,6 +67,11 @@ const createMapSlice: StateCreator<MapSlice> = (set, get) => ({
     }
 
     set({ isMapReady: true, markers: newMarkers });
+  },
+
+  // Clear markers from map.
+  clearMarkers: () => {
+    get().markers.forEach((marker) => marker.remove());
   },
 });
 

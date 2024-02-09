@@ -51,10 +51,13 @@ const createRouteSlice: StateCreator<RouteSlice> = (set) => ({
       set({ isLoadingRoute: false });
     }
   },
+
   // Clear the route from the map.
   clearRoute: () => {
-    if (useBoundStore.getState().map!.getLayer("RouteString"))
+    if (useBoundStore.getState().map!.getLayer("RouteString")) {
+      set({ isRouteFound: null, currentRoute: [] });
       clearRouteF(useBoundStore.getState().map!);
+    }
   },
 });
 
