@@ -3,6 +3,7 @@ import { ButtonStyleOptions } from "./ButtonStyleOptions";
 import { Map } from "lucide-react";
 import { Popover, PopoverContent, PopoverTrigger } from "./ui/popover";
 import { PopoverArrow } from "@radix-ui/react-popover";
+import { TooltipWrap } from "./TooltipWrap";
 
 export type MapStyleString = "streets-v11" | "light-v10" | "satellite-v9";
 
@@ -30,30 +31,32 @@ export const ButtonStyleMap = () => {
   ];
 
   return (
-    <div className="fixed bottom-8 left-4 cursor-pointer ">
-      <Popover>
-        <PopoverTrigger>
-          <div className="flex h-14 w-14 items-center justify-center rounded-lg border border-black bg-white transition hover:scale-105">
-            <Map className="h-8 w-8" />
-          </div>
-        </PopoverTrigger>
-        <PopoverContent
-          side="right"
-          sideOffset={4}
-          className="mb-2 flex w-40 flex-col p-0 text-center"
-        >
-          {mapOptions.map(({ mapType, title }) => (
-            <ButtonStyleOptions
-              key={mapType}
-              mapType={mapType}
-              title={title}
-              activeButton={activeButton}
-              setActiveButton={setActiveButton}
-            />
-          ))}
-          <PopoverArrow />
-        </PopoverContent>
-      </Popover>
-    </div>
+    <TooltipWrap side="right" tooltipText="Change map style">
+      <div className="fixed bottom-8 left-4 cursor-pointer">
+        <Popover>
+          <PopoverTrigger>
+            <div className="flex h-14 w-14 items-center justify-center rounded-lg border border-black bg-white transition hover:scale-105">
+              <Map className="h-8 w-8" />
+            </div>
+          </PopoverTrigger>
+          <PopoverContent
+            side="right"
+            sideOffset={4}
+            className="mb-2 flex w-40 flex-col p-0 text-center"
+          >
+            {mapOptions.map(({ mapType, title }) => (
+              <ButtonStyleOptions
+                key={mapType}
+                mapType={mapType}
+                title={title}
+                activeButton={activeButton}
+                setActiveButton={setActiveButton}
+              />
+            ))}
+            <PopoverArrow />
+          </PopoverContent>
+        </Popover>
+      </div>
+    </TooltipWrap>
   );
 };
