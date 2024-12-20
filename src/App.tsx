@@ -6,6 +6,7 @@ import { MapView } from "./pages/MapView";
 import { ButtonUserLocation } from "./components/ButtonUserLocation";
 import { ButtonStyleMap } from "./components/ButtonStyleMap";
 import { SearchContainer } from "./components/search/SearchContainer";
+import { ButtonZoom } from "./components/ButtonZoom";
 
 function App() {
   // Ask for coordinates.
@@ -30,6 +31,7 @@ function App() {
         <ButtonUserLocation />
         <ButtonStyleMap />
         <SearchContainer />
+        <ButtonZoom />
       </>
     </>
   );
