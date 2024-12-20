@@ -48,7 +48,7 @@ export const ButtonStyleOptions = ({
         <div
           title={title}
           onClick={onClick}
-          className={`cursor-pointer p-2 font-semibold ${activeButton === mapType ? "bg-blue-500 text-white" : "bg-white text-black"}`}
+          className={`cursor-pointer p-2 font-semibold ${activeButton === mapType ? "bg-blue-500 text-white" : "bg-white text-black hover:bg-blue-200/60"}`}
         >
           {title}
         </div>
